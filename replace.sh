@@ -8,12 +8,8 @@ if [ ! -f "$CONFIG_FILE" ]; then
     exit 1
 fi
 
-source "$CONFIG_FILE"
-
-# Ensure SKIPS is an actual bash array
-eval "SKIPS=(${SKIPS[@]})"
-
 # Get app name from argument
+source "$CONFIG_FILE"
 APP_ENV="$1"
 
 # If no argument, show interactive menu
@@ -27,9 +23,6 @@ if [ -z "$APP_ENV" ]; then
     for d in "$BASE_DIR"/* ; do
         if [ -d "$d" ]; then
             folder=$(basename "$d")
-            if [[ " ${SKIPS[@]} " =~ " $folder " ]]; then
-                continue
-            fi
             OPTIONS+=("$folder")
             echo "  $i) $folder"
             ((i++))
