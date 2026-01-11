@@ -8,46 +8,41 @@ if [ ! -f "$CONFIG_FILE" ]; then
     exit 1
 fi
 
-# Get app name from argument
+# Interactive menu
 source "$CONFIG_FILE"
-APP_ENV="$1"
 
-# If no argument, show interactive menu
-if [ -z "$APP_ENV" ]; then
-    echo "📦 No app name provided."
-    echo "📋 Available apps:"
+echo "📋 Available apps:"
 
-    # List only directories (excluding files like README.md or scripts)
-    OPTIONS=()
-    i=1
-    for d in "$BASE_DIR"/* ; do
-        if [ -d "$d" ]; then
-            folder=$(basename "$d")
-            OPTIONS+=("$folder")
-            echo "  $i) $folder"
-            ((i++))
-        fi
-    done
-
-    echo ""
-    read -p "👉 Choose an app number: " choice
-
-    if ! [[ "$choice" =~ ^[0-9]+$ ]]; then
-        echo ""
-        echo "❌ Invalid input. Please enter a number."
-        exit 1
+# List only directories (excluding files like README.md or scripts)
+OPTIONS=()
+i=1
+for d in "$BASE_DIR"/* ; do
+    if [ -d "$d" ]; then
+        folder=$(basename "$d")
+        OPTIONS+=("$folder")
+        echo "  $i) $folder"
+        ((i++))
     fi
+done
 
-    if [ "$choice" -lt 1 ] || [ "$choice" -gt "${#OPTIONS[@]}" ]; then
-        echo ""
-        echo "❌ Invalid choice."
-        exit 1
-    fi
+echo ""
+read -p "👉 Choose an app number: " choice
 
-    APP_ENV="${OPTIONS[$choice-1]}"
-    echo "🟢 Selected: $APP_ENV"
+if ! [[ "$choice" =~ ^[0-9]+$ ]]; then
     echo ""
+    echo "❌ Invalid input. Please enter a number."
+    exit 1
 fi
+
+if [ "$choice" -lt 1 ] || [ "$choice" -gt "${#OPTIONS[@]}" ]; then
+    echo ""
+    echo "❌ Invalid choice."
+    exit 1
+fi
+
+APP_ENV="${OPTIONS[$choice-1]}"
+echo "🟢 Selected: $APP_ENV"
+echo ""
 
 # Now proceed normally
 SRC="$BASE_DIR/$APP_ENV"
