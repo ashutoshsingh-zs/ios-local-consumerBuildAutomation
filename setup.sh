@@ -1,9 +1,14 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
+IFS=$'\n\t'
 
 # Script ki directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+
+# Small helpers
+log() { echo "🔧 $*"; }
+die() { echo "❌ $*" >&2; exit 1; }
 
 # List of scripts to make executable
 SCRIPTS_TO_CHMOD=(
@@ -18,7 +23,7 @@ declare -A GIT_ALIASES=(
 
 
 # Make scripts executable
-echo "🔧 Making selected scripts executable..."
+log "Making selected scripts executable..."
 
 for script in "${SCRIPTS_TO_CHMOD[@]}"; do
   SCRIPT_PATH="$SCRIPT_DIR/$script"

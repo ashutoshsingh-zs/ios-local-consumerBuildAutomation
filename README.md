@@ -1,6 +1,6 @@
 # **ios-local-consumerBuildAutomation**
 
-This tool is a local-first build automation tool enabling app-specific configurations eliminating manual copy-paste and drag-and-drop operations. It separates automation logic from the ios-consumer-app.
+A local-first build automation tool enabling app-specific configurations eliminating manual copy-paste and drag-and-drop operations. It separates automation logic from the ios-consumer-app.
 
 ---
 
@@ -17,13 +17,19 @@ This tool is a local-first build automation tool enabling app-specific configura
 - Git installed
 - Both repositories cloned locally
 
-### Configuration
+### Setup
+
+Run `bash setup.sh` to make scripts executable and (optionally) install a global `git` alias used by `reset.sh`:
+
+```bash
+bash setup.sh
+```
 
 Edit `config.env` to point to your local paths:
 
 ```bash
-# Path to your automation base folder (contains app-specific configs)
-BASE_DIR="/path/to/appAssets"
+# Path to your app assets folder
+BASE_DIR="/path/to/app-assets"
 
 # Path to the iOS consumer repository
 DEST="/path/to/ios-consumer-app"
@@ -55,17 +61,20 @@ Each app variant directory should contain:
 
 ### Apply Configuration
 
-Apply a specific app's configuration to your iOS repository:
+Run the interactive apply script to choose an app and apply its configuration:
 
 ```bash
-# Interactive mode (shows menu)
 ./apply.sh
 ```
+
+Notes:
+- `apply.sh` is **interactive-only** and will show an indexed menu of app folders found under `BASE_DIR`.
+- Scripts validate that `BASE_DIR` and `DEST` exist and that `DEST` is writable.
 
 **What it does:**
 1. Copies `Configuration.xcconfig` to the iOS repo root
 2. Copies `GoogleService-Info.plist` to `Consumer/` directory
-3. Replaces `Consumer/Assets/Assets.xcassets/_Configuration` with the app variant's assets
+3. Replaces `Consumer/Assets/Assets.xcassets/_Configuration` with the app variant's `_Configuration` folder
 
 **Output Example:**
 ```
@@ -79,7 +88,7 @@ Apply a specific app's configuration to your iOS repository:
 
 ### Reset Repository
 
-Discard all uncommitted changes and restore the iOS repository to a clean state:
+Clean the working tree in the target iOS repository:
 
 ```bash
 ./reset.sh
@@ -99,9 +108,12 @@ Discard all uncommitted changes and restore the iOS repository to a clean state:
 
 ## **Contributing**
 
-Maintain the principle of clarity and safety in all changes.
+Maintain the principle of clarity and safety in all changes. Please run linters (`shellcheck`) locally before submitting PRs.
+
 Branch naming convention:
-- **bugFix** or **feat** or **misc**
-- issue number
-- small description in **camelCase**
-- e.g. **bugFix/108/configurationManagementIssue**
+- `bugFix/ISSUE_NUMBER/shortDescription` or `feat/ISSUE_NUMBER/shortDescription`
+
+---
+
+**Note:** Several quality improvements (atomic swaps, dry-run mode, backups, CI checks) are suggested for the future; they are intentionally left as feature work to be added incrementally.
+
