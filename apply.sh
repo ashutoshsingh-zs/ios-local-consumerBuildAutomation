@@ -1,15 +1,39 @@
 #!/bin/bash
 
+set -euo pipefail
+IFS=$'\n\t'
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 CONFIG_FILE="$SCRIPT_DIR/config.env"
 
+# Small helpers
+log() { echo "🔧 $*"; }
+die() { echo "❌ $*" >&2; exit 1; }
+
 if [ ! -f "$CONFIG_FILE" ]; then
-    echo "❌ Missing config.env at: $CONFIG_FILE"
-    exit 1
+    die "Missing config.env at: $CONFIG_FILE"
 fi
 
 # Interactive menu
 source "$CONFIG_FILE"
+
+# Validate environment
+: "Checking required variables"
+if [ -z "${BASE_DIR:-}" ] || [ -z "${DEST:-}" ]; then
+    die "BASE_DIR and DEST must be set in $CONFIG_FILE"
+fi
+
+if [ ! -d "$BASE_DIR" ]; then
+    die "BASE_DIR does not exist: $BASE_DIR"
+fi
+
+if [ ! -d "$DEST" ]; then
+    die "DEST does not exist: $DEST"
+fi
+
+if [ ! -w "$DEST" ]; then
+    die "DEST is not writable: $DEST"
+fi
 
 echo "📋 Available apps:"
 
