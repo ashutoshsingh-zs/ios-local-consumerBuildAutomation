@@ -6,6 +6,7 @@ This tool is a local-first build automation tool enabling app-specific configura
 
 ## **System Architecture**
 
+<img width="628" height="564" alt="image" src="https://github.com/user-attachments/assets/3636ec3d-f14a-4a55-9500-535d187b3e20" />
 
 ---
 
