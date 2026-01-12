@@ -19,13 +19,19 @@ A local-first build automation tool enabling app-specific configurations elimina
 
 ### Setup
 
-Run `bash setup.sh` to make scripts executable and (optionally) install a global `git` alias used by `reset.sh`:
-
+- In a new terminal, enter the following command:
 ```bash
-bash setup.sh
+git config --global alias.cleanall "!git restore . && git clean -fd"
 ```
 
-Edit `config.env` to point to your local paths:
+- Open a new terminal at the repo folder.
+Then run the following command on it:
+
+```bash
+chmod +x *.sh
+```
+
+- Edit `config.env` to point to your local paths:
 
 ```bash
 # Path to your app assets folder
