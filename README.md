@@ -6,7 +6,7 @@ A local-first build automation tool enabling app-specific configurations elimina
 
 ## **System Architecture**
 
-<img width="693" height="613" alt="Screenshot 2026-01-13 at 12 06 41 AM" src="https://github.com/user-attachments/assets/4485f528-1ba8-4c36-8d55-4581513f9f42" />
+<img width="718" height="617" alt="Screenshot 2026-07-18 at 11 31 24 PM" src="https://github.com/user-attachments/assets/feda9da4-60a6-482d-b99d-0549b092869d" />
 
 ---
 
